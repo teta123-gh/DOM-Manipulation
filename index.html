@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InsightFlow — Employee Performance Dashboard</title>
+<style>
+  :root {
+    --green: #d4f7dc; --green-text:#1a7d34;
+    --yellow: #fff6cf; --yellow-text:#8a6d00;
+    --red: #fbdada; --red-text:#b3261e;
+    --primary:#3b5bfd; --dark:#1f2430; --border:#e2e5ec;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6fb;
+    margin: 0;
+    padding: 30px;
+    color: var(--dark);
+  }
+  h1 { margin-bottom: 4px; }
+  .subtitle { color:#666; margin-top:0; margin-bottom:24px; }
+
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .toolbar input, .toolbar select {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .toolbar input { flex: 1; min-width: 180px; }
+  .btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .btn:hover { opacity: 0.9; }
+  .btn.secondary { background: #6b7280; }
+  .btn.danger { background: #e0433f; padding: 6px 10px; font-size: 12px; }
+  .btn.edit { background: #f2a93b; padding: 6px 10px; font-size: 12px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  th {
+    background: var(--dark);
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  th.sortable:hover { background: #333a4d; }
+  .sort-arrow { font-size: 11px; margin-left: 4px; opacity: 0.8; }
+
+  tr.score-high { background: var(--green); }
+  tr.score-mid  { background: var(--yellow); }
+  tr.score-low  { background: var(--red); }
+
+  .actions-cell { display: flex; gap: 6px; }
+
+  .summary {
+    display: flex;
+    gap: 16px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 22px;
+    flex: 1;
+    min-width: 160px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .summary-card .label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  .summary-card .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+
+  /* Modal */
+  .overlay {
+    display: none;
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+  .modal h3 { margin-top: 0; }
+  .modal label { display:block; font-size: 13px; margin: 12px 0 4px; font-weight: 600; }
+  .modal input, .modal select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .error-text { color: var(--red-text); font-size: 12px; margin-top: 6px; min-height: 16px; }
+  .modal-buttons { display:flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+</style>
+</head>
+<body>
+
+<h1>InsightFlow</h1>
+<p class="subtitle">Employee Performance Dashboard</p>
+
+<div class="toolbar">
+  <input type="text" id="searchInput" placeholder="Search by name...">
+  <select id="roleFilter">
+    <option value="">All Roles</option>
+  </select>
+  <button class="btn" id="addEmployeeBtn">+ Add Employee</button>
+</div>
+
+<table id="employeeTable">
+  <thead id="tableHead"></thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<div class="summary" id="summarySection"></div>
+
+<!-- Modal overlay (shared for Edit and Add) -->
+<div class="overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+/* ======================================================
+   1. STATE — everything lives in this array in memory
+   ====================================================== */
+const employees = [
+  { id: 1, name: "Enock Ntwari", role: "Developer", score: 88 },
+  { id: 2, name: "Kyle Konan", role: "Designer", score: 73 },
+  { id: 3, name: "Grace Umwari", role: "Project Manager", score: 91 },
+  { id: 4, name: "Frank Nkurunziza", role: "QA Engineer", score: 64 },
+  { id: 5, name: "Ketsia Teta", role: "Developer", score: 95 },
+  { id: 6, name: "Seth Iradukunda", role: "Designer", score: 79 }
+];
+
+let nextId = 7;               // id counter for new employees
+let sortKey = null;           // which column we're sorted by
+let sortDirection = 1;        // 1 = asc, -1 = desc
+let searchTerm = "";
+let roleFilterValue = "";
+
+/* ======================================================
+   2. ELEMENT REFERENCES
+   ====================================================== */
+const tableHead = document.getElementById("tableHead");
+const tableBody = document.getElementById("tableBody");
+const summarySection = document.getElementById("summarySection");
+const searchInput = document.getElementById("searchInput");
+const roleFilter = document.getElementById("roleFilter");
+const addEmployeeBtn = document.getElementById("addEmployeeBtn");
+const modalOverlay = document.getElementById("modalOverlay");
+const modalContent = document.getElementById("modalContent");
+
+/* ======================================================
+   3. HELPERS
+   ====================================================== */
+
+// Empties a container using removeChild (pure DOM API, no innerHTML reset)
+function clearElement(el) {
+  while (el.firstChild) {
+    el.removeChild(el.firstChild);
+  }
+}
+
+// Returns the score class for row highlighting
+function getScoreClass(score) {
+  if (score >= 85) return "score-high";
+  if (score >= 70) return "score-mid";
+  return "score-low";
+}
+
+// Applies search + role filter to the employees array
+function getFilteredEmployees() {
+  return employees.filter(emp => {
+    const matchesSearch = emp.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = roleFilterValue === "" || emp.role === roleFilterValue;
+    return matchesSearch && matchesRole;
+  });
+}
+
+// Applies current sort to a given array (does not mutate original)
+function getSortedEmployees(list) {
+  if (!sortKey) return list;
+  const sorted = [...list].sort((a, b) => {
+    let valA = a[sortKey];
+    let valB = b[sortKey];
+    if (typeof valA === "string") {
+      return valA.localeCompare(valB) * sortDirection;
+    }
+    return (valA - valB) * sortDirection;
+  });
+  return sorted;
+}
+
+// Rebuilds the <select> role dropdown options based on current data
+function populateRoleFilter() {
+  const currentValue = roleFilter.value;
+  const uniqueRoles = [...new Set(employees.map(e => e.role))];
+
+  clearElement(roleFilter);
+  const allOption = document.createElement("option");
+  allOption.value = "";
+  allOption.textContent = "All Roles";
+  roleFilter.appendChild(allOption);
+
+  uniqueRoles.forEach(role => {
+    const opt = document.createElement("option");
+    opt.value = role;
+    opt.textContent = role;
+    roleFilter.appendChild(opt);
+  });
+
+  // preserve selection if it still exists
+  if (uniqueRoles.includes(currentValue)) {
+    roleFilter.value = currentValue;
+  }
+}
+
+/* ======================================================
+   4. RENDER TABLE HEAD (with sortable columns)
+   ====================================================== */
+function renderTableHead() {
+  clearElement(tableHead); // clear via removeChild loop
+  const headRow = document.createElement("tr");
+
+  const columns = [
+    { key: "name", label: "Name" },
+    { key: "role", label: "Role" },
+    { key: "score", label: "Score" }
+  ];
+
+  columns.forEach(col => {
+    const th = document.createElement("th");
+    th.classList.add("sortable");
+    th.textContent = col.label;
+
+    // show arrow if this column is currently sorted
+    if (sortKey === col.key) {
+      const arrow = document.createElement("span");
+      arrow.classList.add("sort-arrow");
+      arrow.textContent = sortDirection === 1 ? "▲" : "▼";
+      th.appendChild(arrow);
+    }
+
+    th.addEventListener("click", () => {
+      if (sortKey === col.key) {
+        sortDirection *= -1; // toggle direction
+      } else {
+        sortKey = col.key;
+        sortDirection = 1;
+      }
+      renderAll();
+    });
+
+    headRow.appendChild(th);
+  });
+
+  // extra header for actions column
+  const actionsTh = document.createElement("th");
+  actionsTh.textContent = "Actions";
+  headRow.appendChild(actionsTh);
+
+  tableHead.appendChild(headRow);
+}
+
+/* ======================================================
+   5. RENDER TABLE BODY
+   ====================================================== */
+function renderTableBody() {
+  clearElement(tableBody); // clear existing rows via removeChild loop
+
+  const filtered = getFilteredEmployees();
+  const finalList = getSortedEmployees(filtered);
+
+  finalList.forEach(emp => {
+    const row = document.createElement("tr");
+    row.classList.add(getScoreClass(emp.score));
+
+    const nameCell = document.createElement("td");
+    nameCell.textContent = emp.name;
+
+    const roleCell = document.createElement("td");
+    roleCell.textContent = emp.role;
+
+    const scoreCell = document.createElement("td");
+    scoreCell.textContent = emp.score;
+
+    const actionsCell = document.createElement("td");
+    actionsCell.classList.add("actions-cell");
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("btn", "edit");
+    editBtn.addEventListener("click", () => openEditModal(emp.id));
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("btn", "danger");
+    deleteBtn.addEventListener("click", () => deleteEmployee(emp.id));
+
+    actionsCell.appendChild(editBtn);
+    actionsCell.appendChild(deleteBtn);
+
+    row.appendChild(nameCell);
+    row.appendChild(roleCell);
+    row.appendChild(scoreCell);
+    row.appendChild(actionsCell);
+
+    tableBody.appendChild(row);
+  });
+
+  // handle empty state
+  if (finalList.length === 0) {
+    const emptyRow = document.createElement("tr");
+    const emptyCell = document.createElement("td");
+    emptyCell.colSpan = 4;
+    emptyCell.textContent = "No employees match your search/filter.";
+    emptyCell.style.textAlign = "center";
+    emptyCell.style.padding = "20px";
+    emptyRow.appendChild(emptyCell);
+    tableBody.appendChild(emptyRow);
+  }
+}
+
+/* ======================================================
+   6. SUMMARY SECTION
+   ====================================================== */
+function renderSummary() {
+  clearElement(summarySection);
+
+  const total = employees.length;
+  const avgScore = total === 0
+    ? 0
+    : (employees.reduce((sum, e) => sum + e.score, 0) / total).toFixed(1);
+
+  let topEmployee = null;
+  if (total > 0) {
+    topEmployee = employees.reduce((best, e) => e.score > best.score ? e : best, employees[0]);
+  }
+
+  const cards = [
+    { label: "Total Employees", value: total },
+    { label: "Average Score", value: avgScore },
+    { label: "Top Performer", value: topEmployee ? `${topEmployee.name} (${topEmployee.score})` : "—" }
+  ];
+
+  cards.forEach(cardData => {
+    const card = document.createElement("div");
+    card.classList.add("summary-card");
+
+    const label = document.createElement("div");
+    label.classList.add("label");
+    label.textContent = cardData.label;
+
+    const value = document.createElement("div");
+    value.classList.add("value");
+    value.textContent = cardData.value;
+
+    card.appendChild(label);
+    card.appendChild(value);
+    summarySection.appendChild(card);
+  });
+}
+
+/* ======================================================
+   7. MASTER RENDER — call this after any data change
+   ====================================================== */
+function renderAll() {
+  populateRoleFilter();
+  renderTableHead();
+  renderTableBody();
+  renderSummary();
+}
+
+/* ======================================================
+   8. MODAL LOGIC — shared overlay for Edit + Add
+   ====================================================== */
+function closeModal() {
+  modalOverlay.classList.remove("open");
+  clearElement(modalContent);
+}
+
+// click outside modal box closes it
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+
+function openEditModal(id) {
+  const emp = employees.find(e => e.id === id);
+  if (!emp) return;
+
+  clearElement(modalContent);
+
+  const title = document.createElement("h3");
+  title.textContent = `Edit ${emp.name}`;
+
+  const roleLabel = document.createElement("label");
+  roleLabel.textContent = "Role";
+  const roleInput = document.createElement("input");
+  roleInput.type = "text";
+  roleInput.value = emp.role;
+
+  const scoreLabel = document.createElement("label");
+  scoreLabel.textContent = "Score (0-100)";
+  const scoreInput = document.createElement("input");
+  scoreInput.type = "number";
+  scoreInput.value = emp.score;
+
+  const errorText = document.createElement("div");
+  errorText.classList.add("error-text");
+
+  const buttonRow = document.createElement("div");
+  buttonRow.classList.add("modal-buttons");
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.classList.add("btn", "secondary");
+  cancelBtn.addEventListener("click", closeModal);
+
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "Save";
+  saveBtn.classList.add("btn");
+  saveBtn.addEventListener("click", () => {
+    const newRole = roleInput.value.trim();
+    const newScore = Number(scoreInput.value);
+
+    if (newRole === "") {
+      errorText.textContent = "Role cannot be empty.";
+      return;
+    }
+    if (isNaN(newScore) || newScore < 0 || newScore > 100) {
+      errorText.textContent = "Score must be a number between 0 and 100.";
+      return;
+    }
+
+    emp.role = newRole;
+    emp.score = newScore;
+    closeModal();
+    renderAll();
+  });
+
+  buttonRow.appendChild(cancelBtn);
+  buttonRow.appendChild(saveBtn);
+
+  modalContent.appendChild(title);
+  modalContent.appendChild(roleLabel);
+  modalContent.appendChild(roleInput);
+  modalContent.appendChild(scoreLabel);
+  modalContent.appendChild(scoreInput);
+  modalContent.appendChild(errorText);
+  modalContent.appendChild(buttonRow);
+
+  modalOverlay.classList.add("open");
+}
+
+function openAddModal() {
+  clearElement(modalContent);
+
+  const title = document.createElement("h3");
+  title.textContent = "Add Employee";
+
+  const nameLabel = document.createElement("label");
+  nameLabel.textContent = "Name";
+  const nameInput = document.createElement("input");
+  nameInput.type = "text";
+
+  const roleLabel = document.createElement("label");
+  roleLabel.textContent = "Role";
+  const roleInput = document.createElement("input");
+  roleInput.type = "text";
+
+  const scoreLabel = document.createElement("label");
+  scoreLabel.textContent = "Score (0-100)";
+  const scoreInput = document.createElement("input");
+  scoreInput.type = "number";
+
+  const errorText = document.createElement("div");
+  errorText.classList.add("error-text");
+
+  const buttonRow = document.createElement("div");
+  buttonRow.classList.add("modal-buttons");
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.classList.add("btn", "secondary");
+  cancelBtn.addEventListener("click", closeModal);
+
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "Add";
+  saveBtn.classList.add("btn");
+  saveBtn.addEventListener("click", () => {
+    const name = nameInput.value.trim();
+    const role = roleInput.value.trim();
+    const score = Number(scoreInput.value);
+
+    if (name === "" || role === "") {
+      errorText.textContent = "Name and role are required.";
+      return;
+    }
+    if (isNaN(score) || score < 0 || score > 100) {
+      errorText.textContent = "Score must be a number between 0 and 100.";
+      return;
+    }
+
+    employees.push({ id: nextId++, name, role, score });
+    closeModal();
+    renderAll();
+  });
+
+  buttonRow.appendChild(cancelBtn);
+  buttonRow.appendChild(saveBtn);
+
+  modalContent.appendChild(title);
+  modalContent.appendChild(nameLabel);
+  modalContent.appendChild(nameInput);
+  modalContent.appendChild(roleLabel);
+  modalContent.appendChild(roleInput);
+  modalContent.appendChild(scoreLabel);
+  modalContent.appendChild(scoreInput);
+  modalContent.appendChild(errorText);
+  modalContent.appendChild(buttonRow);
+
+  modalOverlay.classList.add("open");
+}
+
+/* ======================================================
+   9. DELETE
+   ====================================================== */
+function deleteEmployee(id) {
+  const index = employees.findIndex(e => e.id === id);
+  if (index !== -1) {
+    employees.splice(index, 1);
+    renderAll();
+  }
+}
+
+/* ======================================================
+   10. EVENT LISTENERS — search, filter, add button
+   ====================================================== */
+searchInput.addEventListener("input", (e) => {
+  searchTerm = e.target.value;
+  renderTableBody(); // only need to re-render rows, not head/summary
+});
+
+roleFilter.addEventListener("change", (e) => {
+  roleFilterValue = e.target.value;
+  renderTableBody();
+});
+
+addEmployeeBtn.addEventListener("click", openAddModal);
+
+/* ======================================================
+   11. INITIAL RENDER ON PAGE LOAD
+   ====================================================== */
+renderAll();
+</script>
+</body>
+</html>
