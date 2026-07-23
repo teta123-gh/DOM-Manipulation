@@ -1,0 +1,1267 @@
+{
+	"info": {
+		"_postman_id": "ff516888-63e0-4930-b45e-f3e0c576439b",
+		"name": "CivicEvents+ API",
+		"description": "Postman collection for CivicEvents+ backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31034733"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Alice Doe\",\n    \"email\": \"alice@gmail.com\",\n    \"password\": \"Password123@\",\n    \"role\": \"user\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"Password123@\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List Users (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAyMzkzNCwiZXhwIjoxNzYzMDI3NTM0fQ.0rIJMvh8XgRvoffOb78BfBAwB5PlRrcz6C27Pge6CrU"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAyMzkzNCwiZXhwIjoxNzYzMDI3NTM0fQ.0rIJMvh8XgRvoffOb78BfBAwB5PlRrcz6C27Pge6CrU"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/39a548a8-e40b-4a4e-8348-d1452cb3992c",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"39a548a8-e40b-4a4e-8348-d1452cb3992c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable User (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAyMzkzNCwiZXhwIjoxNzYzMDI3NTM0fQ.0rIJMvh8XgRvoffOb78BfBAwB5PlRrcz6C27Pge6CrU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/39a548a8-e40b-4a4e-8348-d1452cb3992c/enable",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"39a548a8-e40b-4a4e-8348-d1452cb3992c",
+								"enable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disable User (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAyMzkzNCwiZXhwIjoxNzYzMDI3NTM0fQ.0rIJMvh8XgRvoffOb78BfBAwB5PlRrcz6C27Pge6CrU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/39a548a8-e40b-4a4e-8348-d1452cb3992c/disable",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"39a548a8-e40b-4a4e-8348-d1452cb3992c",
+								"disable"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDI0NTAxLCJleHAiOjE3NjMwMjgxMDF9.lXwjU1WBiQ18SPh1Ky8ydTb94lq0_MTYWmFnRgTv19E",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/profile/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDI1MDYzLCJleHAiOjE3NjMwMjg2NjN9.NssOJvYaxTCPhJDaORRZEW6DD9G-R7nU0pCiy929xbU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"John D\",\r\n    \"email\": \"john@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/profile/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDI2NTIxLCJleHAiOjE3NjMwMzAxMjF9.SLvRFFA46JJaSX0fnK4yXm8oLZWwSfJDxrM87cRhxgQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDI2NTIxLCJleHAiOjE3NjMwMzAxMjF9.SLvRFFA46JJaSX0fnK4yXm8oLZWwSfJDxrM87cRhxgQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/7290f6d3-7b8b-4d66-9a82-3fc4508807a2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"7290f6d3-7b8b-4d66-9a82-3fc4508807a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAzMDQ1NCwiZXhwIjoxNzYzMDM0MDU0fQ.5QxzzcjedUZ0oJBZoptz3HIDrqfEod01FIeGF4gOgNo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Street Food Festival Again",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Taste the best local and international cuisines on the street",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "Market Square",
+									"type": "text"
+								},
+								{
+									"key": "starts_at",
+									"value": "2025-12-20T08:00:00Z",
+									"type": "text"
+								},
+								{
+									"key": "ends_at",
+									"value": "2025-12-20T08:00:00Z",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/odartei/OneDrive - andrew.cmu.edu/Pictures/20230912.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAyNzExNiwiZXhwIjoxNzYzMDMwNzE2fQ.UUDKXgWpvFrY17qpnIdoZywT68jHqvefBR4MqBZfFdc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/eb62d732-d483-4862-aedb-dcbc9d5c4a06",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"eb62d732-d483-4862-aedb-dcbc9d5c4a06"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAyNzExNiwiZXhwIjoxNzYzMDMwNzE2fQ.UUDKXgWpvFrY17qpnIdoZywT68jHqvefBR4MqBZfFdc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "He",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "HeHe",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "He",
+									"type": "text"
+								},
+								{
+									"key": "starts_at",
+									"value": "2025-12-20T08:00:00Z",
+									"type": "text"
+								},
+								{
+									"key": "ends_at",
+									"value": "2025-12-20T08:00:00Z",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/odartei/OneDrive - andrew.cmu.edu/Pictures/6.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events/eb62d732-d483-4862-aedb-dcbc9d5c4a06",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"eb62d732-d483-4862-aedb-dcbc9d5c4a06"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAzMDQ1NCwiZXhwIjoxNzYzMDM0MDU0fQ.5QxzzcjedUZ0oJBZoptz3HIDrqfEod01FIeGF4gOgNo",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAzMDQ1NCwiZXhwIjoxNzYzMDM0MDU0fQ.5QxzzcjedUZ0oJBZoptz3HIDrqfEod01FIeGF4gOgNo",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/a010701d-4697-4591-b680-b1f43362d964",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notifications",
+								"a010701d-4697-4591-b680-b1f43362d964"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzAzMDc1NiwiZXhwIjoxNzYzMDM0MzU2fQ.DwsR8sddsIouADO1OiygLp9HYYvfQ-At795GjUwj_qk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/a010701d-4697-4591-b680-b1f43362d964",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notifications",
+								"a010701d-4697-4591-b680-b1f43362d964"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Announcements",
+			"item": [
+				{
+					"name": "List Announcements",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDQxOTM0LCJleHAiOjE3NjMwNDU1MzR9.iDAbRqefBWQfBVuK9xRAO_nys_58MEVe8VnW1fjXzf8",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"announcements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Announcement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDQzODQ3LCJleHAiOjE3NjMwNDc0NDd9.JTUXxyMXB6Yp4JizOQ9_K-U3zda993ZQrWikelrHNs4",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Greetings",
+									"type": "text"
+								},
+								{
+									"key": "audio",
+									"type": "file",
+									"src": "/C:/Users/odartei/Music/Vybz Kartel – Great.mp3"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/announcements",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"announcements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Announcement",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDQzODQ3LCJleHAiOjE3NjMwNDc0NDd9.JTUXxyMXB6Yp4JizOQ9_K-U3zda993ZQrWikelrHNs4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements/cd50c44c-e2e6-4370-b571-af9a0611b7d3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"announcements",
+								"cd50c44c-e2e6-4370-b571-af9a0611b7d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Announcement",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA0NDExMCwiZXhwIjoxNzYzMDQ3NzEwfQ.sZCuyi36LtMd-9S2aP8KAcVZvu1fDG8Z8xR8s8XsgFc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements/cd50c44c-e2e6-4370-b571-af9a0611b7d3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"announcements",
+								"cd50c44c-e2e6-4370-b571-af9a0611b7d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Announcement",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA0NDExMCwiZXhwIjoxNzYzMDQ3NzEwfQ.sZCuyi36LtMd-9S2aP8KAcVZvu1fDG8Z8xR8s8XsgFc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements/05878fe5-a66d-45be-a0af-68ed9b25e4e4/publish",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"announcements",
+								"05878fe5-a66d-45be-a0af-68ed9b25e4e4",
+								"publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unpublish Announcement",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA0NDExMCwiZXhwIjoxNzYzMDQ3NzEwfQ.sZCuyi36LtMd-9S2aP8KAcVZvu1fDG8Z8xR8s8XsgFc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/announcements/05878fe5-a66d-45be-a0af-68ed9b25e4e4/unpublish",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"announcements",
+								"05878fe5-a66d-45be-a0af-68ed9b25e4e4",
+								"unpublish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Promos",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA2MzMxNSwiZXhwIjoxNzYzMDY2OTE1fQ.R-hu1azcb_nOyzuCynhdvBIaxfnZD4b4DMgoZ9ckZn4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Great",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Great",
+									"type": "text"
+								},
+								{
+									"key": "caption_text",
+									"value": "Great",
+									"type": "text"
+								},
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/odartei/Desktop/WhatsApp-video.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promos/25c396bd-e3f4-4443-8689-38f55ec55450",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos",
+								"25c396bd-e3f4-4443-8689-38f55ec55450"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Registration",
+			"item": [
+				{
+					"name": "Register Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNmNjIzYTRhLTI4NmQtNGFhOC04NmM0LWE1MGU1YjI1NjRiMyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDU3Mjk0LCJleHAiOjE3NjMwNjA4OTR9.uCXwedZmFyR_z3bim9s0sTXVYsxIY45H-hsSirTfrcw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"event_id\": \"eb62d732-d483-4862-aedb-dcbc9d5c4a06\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/event-registrations/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-registrations",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDQ2MzgxLCJleHAiOjE3NjMwNDk5ODF9.TmSzVx9n_wGr-dyWk5pdxyPxxZj1-C0mpCr7ojIh4ww",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"event_id\": \"15038a9f-a4f0-4dc4-b019-bba3b041f3ce\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/event-registrations/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-registrations",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My Registrations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDU3MjQxLCJleHAiOjE3NjMwNjA4NDF9.Nn7oYjgbnbPbyTgap3veDdmFlt_iSKNlLJo1MWQZmag",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/event-registrations/my-registrations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-registrations",
+								"my-registrations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Registered User For Event",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA1NzM0MCwiZXhwIjoxNzYzMDYwOTQwfQ.E5bqt_qJviyKltMhrUkwF5BwmVGFD7_H01mx2yf1-5M",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/event-registrations/event/eb62d732-d483-4862-aedb-dcbc9d5c4a06/attendees",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-registrations",
+								"event",
+								"eb62d732-d483-4862-aedb-dcbc9d5c4a06",
+								"attendees"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Feedback",
+			"item": [
+				{
+					"name": "Create Feedback",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDU3NzYyLCJleHAiOjE3NjMwNjEzNjJ9.XUtluJn6Iuv7lyDP-Bw1o0UEShRavKwLyOui-uo-3z8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"event_id\": \"930c715d-652e-465f-8a19-4a105b2e6206\",\r\n    \"rating\": 1,\r\n    \"comment\": \"Hello\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/event-feedback",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-feedback"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Feedbacks",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDU3NzYyLCJleHAiOjE3NjMwNjEzNjJ9.XUtluJn6Iuv7lyDP-Bw1o0UEShRavKwLyOui-uo-3z8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/event-feedback/my-feedback",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-feedback",
+								"my-feedback"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Feedback",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDU4MzYxLCJleHAiOjE3NjMwNjE5NjF9.REEPCN1166mCavXu78dksg15JkHI7LzNQv4rnkjjYr0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": 3,\r\n    \"comment\": \"again\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/event-feedback/3740e473-2603-4d14-885f-dabb49f85dce",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-feedback",
+								"3740e473-2603-4d14-885f-dabb49f85dce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Registered Users For Event",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA1NzM0MCwiZXhwIjoxNzYzMDYwOTQwfQ.E5bqt_qJviyKltMhrUkwF5BwmVGFD7_H01mx2yf1-5M",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/event-registrations/event/eb62d732-d483-4862-aedb-dcbc9d5c4a06/attendees",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"event-registrations",
+								"event",
+								"eb62d732-d483-4862-aedb-dcbc9d5c4a06",
+								"attendees"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Promos",
+			"item": [
+				{
+					"name": "List Promos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA2MzMxNSwiZXhwIjoxNzYzMDY2OTE1fQ.R-hu1azcb_nOyzuCynhdvBIaxfnZD4b4DMgoZ9ckZn4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Promo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM5YTU0OGE4LWU0MGItNGE0ZS04MzQ4LWQxNDUyY2IzOTkyYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzMDU5NTE2LCJleHAiOjE3NjMwNjMxMTZ9.m-oFKFnD6NvD0IzXhDgs9I9Evzk8Sj8qEQtHXpe6RXE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promos/38a56ec3-cb9d-4c55-a206-fcc2fc84d439",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos",
+								"38a56ec3-cb9d-4c55-a206-fcc2fc84d439"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Promo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA1ODkzNywiZXhwIjoxNzYzMDYyNTM3fQ.gRh7FxkYapL9CiFBt2-I9P64h5EYqz-gqy66ahFkOmU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Hello",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Hello",
+									"type": "text"
+								},
+								{
+									"key": "caption_text",
+									"value": "Hello",
+									"type": "text"
+								},
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/odartei/Desktop/WhatsApp-video.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/promos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Promo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA1OTY4NSwiZXhwIjoxNzYzMDYzMjg1fQ.flpkgftOkTGZwK6pHmNQby1DcpeWglU15EsadbFfQo0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promos/38a56ec3-cb9d-4c55-a206-fcc2fc84d439",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos",
+								"38a56ec3-cb9d-4c55-a206-fcc2fc84d439"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Promo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA2MzMxNSwiZXhwIjoxNzYzMDY2OTE1fQ.R-hu1azcb_nOyzuCynhdvBIaxfnZD4b4DMgoZ9ckZn4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promos/25c396bd-e3f4-4443-8689-38f55ec55450/publish",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos",
+								"25c396bd-e3f4-4443-8689-38f55ec55450",
+								"publish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unpublish Promo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA2MzMxNSwiZXhwIjoxNzYzMDY2OTE1fQ.R-hu1azcb_nOyzuCynhdvBIaxfnZD4b4DMgoZ9ckZn4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/promos/25c396bd-e3f4-4443-8689-38f55ec55450/unpublish",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"promos",
+								"25c396bd-e3f4-4443-8689-38f55ec55450",
+								"unpublish"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Statistics (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA2NDU5MiwiZXhwIjoxNzYzMDY4MTkyfQ.ZgafxWgQZaJS3ql5g3HvUVm1zbaFmo7rvMA7s0O63j4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dashboard",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Statistics (user)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNTg1MGY4LTk2ZjYtNDhkNy05MjBiLWVkMTMyMjgxZTA2NCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MzA2NDU5MiwiZXhwIjoxNzYzMDY4MTkyfQ.ZgafxWgQZaJS3ql5g3HvUVm1zbaFmo7rvMA7s0O63j4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dashboard",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000"
+		}
+	]
+}
