@@ -1,0 +1,18 @@
+openapi: 3.0.0
+info:
+  title: Kawa Network API
+  version: "1.0"
+paths:
+  /api/status/:
+    get: { responses: { "200": { description: OK } } }
+  /api/farmers/:
+    get: { responses: { "200": { description: Paginated farmer list } } }
+    post: { responses: { "201": { description: Farmer created } } }
+  /api/plots/:
+    get: { responses: { "200": { description: Paginated plot list } } }
+    post: { responses: { "201": { description: Plot created } } }
+  /api/deliveries/:
+    get: { responses: { "200": { description: Paginated delivery list } } }
+    post: { responses: { "201": { description: Delivery created } } }
+  /api/price-schedule/:
+    get: { responses: { "200": { description: Price schedule } } }

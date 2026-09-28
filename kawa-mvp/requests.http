@@ -1,0 +1,92 @@
+﻿### Kawa Network API - manual test flow
+### Requires the REST Client extension. Click "Send Request" above each block.
+
+@baseUrl = http://localhost:8000
+@farmerId = ad1adf17-3914-48e7-b271-cb0656fe5d1a
+@stationId = ffc26103-0e91-493a-848c-ccfbe1d27dce
+@cooperativeId = ce70d8f6-e43f-484b-8677-a4e28953f762
+
+### 1. Price schedule (sanity check the server is up)
+GET {{baseUrl}}/api/price-schedule/
+
+### 2. List farmers
+GET {{baseUrl}}/api/v1/farmers
+
+### 3. Register a new plot for the seeded farmer
+# Triggers the async risk check - watch the rqworker terminal for log output.
+POST {{baseUrl}}/api/v1/farmers/{{farmerId}}/plots
+Content-Type: application/json
+
+{
+  "sector": "Kibeho",
+  "station": "{{stationId}}",
+  "latitude": -2.598000,
+  "longitude": 29.508000,
+  "area_hectares": 0.5
+}
+
+### 4. Check the plot risk_status
+@plotId = 21c8ee74-2640-4762-9471-286597abc426
+GET {{baseUrl}}/api/v1/plots/{{plotId}}
+
+### 5. Record a delivery against that plot
+@idempotencyKey1 = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+POST {{baseUrl}}/api/v1/deliveries
+Content-Type: application/json
+
+{
+  "farmer": "{{farmerId}}",
+  "plot": "{{plotId}}",
+  "station": "{{stationId}}",
+  "quantity_kg": 35.5,
+  "idempotency_key": "{{idempotencyKey1}}"
+}
+
+### 6. Retry the exact same delivery (same idempotency key) - expect 200, not a new record
+POST {{baseUrl}}/api/v1/deliveries
+Content-Type: application/json
+
+{
+  "farmer": "{{farmerId}}",
+  "plot": "{{plotId}}",
+  "station": "{{stationId}}",
+  "quantity_kg": 35.5,
+  "idempotency_key": "{{idempotencyKey1}}"
+}
+
+### 7. Invalid delivery - quantity_kg <= 0, expect 400
+POST {{baseUrl}}/api/v1/deliveries
+Content-Type: application/json
+
+{
+  "farmer": "{{farmerId}}",
+  "plot": "{{plotId}}",
+  "station": "{{stationId}}",
+  "quantity_kg": 0,
+  "idempotency_key": "11111111-1111-1111-1111-111111111111"
+}
+
+### 8. Station delivery feed (paginated)
+GET {{baseUrl}}/api/v1/stations/{{stationId}}/deliveries
+
+### 9. Export lot including the step 5 delivery - expect 400 PLOT_NOT_VERIFIED
+@deliveryId = REPLACE_WITH_DELIVERY_ID_FROM_STEP_5
+POST {{baseUrl}}/api/v1/export-lots
+Content-Type: application/json
+
+{
+  "lot_number": "LOT-2026-001",
+  "deliveries": ["{{deliveryId}}"]
+}
+
+### 9b. Export lot with no deliveries - expect 201
+POST {{baseUrl}}/api/v1/export-lots
+Content-Type: application/json
+
+{
+  "lot_number": "LOT-2026-002"
+}
+
+### 10. Traceability for the lot from step 9b
+@lotId = REPLACE_WITH_LOT_ID_FROM_STEP_9B
+GET {{baseUrl}}/api/v1/export-lots/{{lotId}}/traceability
